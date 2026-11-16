@@ -1,0 +1,193 @@
+<!DOCTYPE html>
+<html lang="id">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no">
+  <title>Dashboard — AYAKA API</title>
+  <link rel="stylesheet" href="/css/style.css">
+  <link rel="stylesheet" href="/css/dashboard.css">
+  <script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
+</head>
+<body>
+
+  <div class="dashboard-layout">
+    <!-- Sidebar -->
+    <aside class="sidebar" id="sidebar">
+      <div class="sidebar-header">
+        <a href="/" class="logo">AYAKA<span>API</span></a>
+      </div>
+      
+      <nav class="sidebar-nav">
+        <a href="#" class="active" data-target="section-overview">
+          <span>🏠</span> Overview
+        </a>
+        <a href="#" data-target="section-keys">
+          <span>🔑</span> API Keys
+        </a>
+        <a href="#" data-target="section-analytics">
+          <span>📊</span> Analytics
+        </a>
+        <a href="#" data-target="section-playground">
+          <span>⚡</span> Playground
+        </a>
+        <a href="/documentation" target="_blank">
+          <span>📚</span> Documentation
+        </a>
+      </nav>
+      
+      <div class="sidebar-footer">
+        <button id="logout-btn" class="btn btn-outline" style="width:100%;">Logout</button>
+      </div>
+    </aside>
+
+    <!-- Main Content -->
+    <main class="main-content">
+      <div class="topbar">
+        <button id="mobile-menu-btn" class="btn" style="display:none;">☰</button>
+        <div class="page-title" id="page-title">Overview</div>
+        <div class="user-info">
+          <span id="user-name" style="font-weight:700;">Loading...</span>
+        </div>
+      </div>
+
+      <!-- SECTION: OVERVIEW -->
+      <section id="section-overview" class="page-section">
+        <div class="stats-grid">
+          <div class="stat-card">
+            <h3>Total Requests</h3>
+            <div class="value" id="stat-total-requests">0</div>
+          </div>
+          <div class="stat-card">
+            <h3>Active API Keys</h3>
+            <div class="value" id="stat-active-keys">0</div>
+          </div>
+          <div class="stat-card">
+            <h3>Premium Emails Sent</h3>
+            <div class="value" id="stat-emails">0</div>
+          </div>
+        </div>
+        
+        <div style="background:var(--yellow); border:var(--border); padding:24px; border-radius:var(--radius); box-shadow:6px 6px 0 var(--black);">
+          <h2 style="font-weight:900; margin-bottom:12px;">AYAKA Sync Status</h2>
+          <p style="font-size:14px; margin-bottom:20px;">Sistem berjalan normal. API Key Anda siap digunakan untuk integrasi.</p>
+          <a href="/documentation" class="btn btn-primary">Lihat Dokumentasi</a>
+        </div>
+      </section>
+
+      <!-- SECTION: API KEYS -->
+      <section id="section-keys" class="page-section" style="display:none;">
+        <div style="display:flex; justify-content:space-between; margin-bottom:20px;">
+          <h2 style="font-weight:900;">Your API Keys</h2>
+        </div>
+        
+        <div class="table-wrapper">
+          <table id="keys-table">
+            <thead>
+              <tr>
+                <th>Name</th>
+                <th>Key Prefix</th>
+                <th>Status</th>
+                <th>Permissions</th>
+                <th>Last Used</th>
+                <th>Action</th>
+              </tr>
+            </thead>
+            <tbody>
+              <!-- Data diisi oleh JS -->
+            </tbody>
+          </table>
+        </div>
+        
+        <!-- Form Generate -->
+        <div style="background:var(--white); border:var(--border); padding:24px; border-radius:var(--radius); box-shadow:6px 6px 0 var(--black); max-width:500px;">
+          <h3 style="font-weight:900; margin-bottom:16px;">Generate New Key</h3>
+          <form id="generate-key-form">
+            <div class="form-group" style="margin-bottom:16px;">
+              <input type="text" name="name" placeholder="Key Name (e.g. Production App)" required style="width:100%; padding:12px; border:3px solid #151515; border-radius:8px;">
+            </div>
+            <div class="form-group" style="margin-bottom:16px;">
+              <input type="text" name="description" placeholder="Description (Optional)" style="width:100%; padding:12px; border:3px solid #151515; border-radius:8px;">
+            </div>
+            <button type="submit" class="btn btn-primary">GENERATE KEY</button>
+          </form>
+        </div>
+      </section>
+
+      <!-- SECTION: ANALYTICS -->
+      <section id="section-analytics" class="page-section" style="display:none;">
+        <div style="background:var(--white); border:var(--border); padding:24px; border-radius:var(--radius); box-shadow:6px 6px 0 var(--black); margin-bottom:24px;">
+          <div style="display:flex; justify-content:space-between; margin-bottom:20px;">
+            <h3 style="font-weight:900;">Request Traffic (24h)</h3>
+            <span id="last-updated" style="font-size:12px; font-weight:700;">Terakhir: -</span>
+          </div>
+          <div style="height:300px; position:relative;">
+            <canvas id="requests-chart"></canvas>
+          </div>
+        </div>
+      </section>
+
+      <!-- SECTION: PLAYGROUND -->
+      <section id="section-playground" class="page-section" style="display:none;">
+        <div class="playground-grid">
+          <!-- Request Side -->
+          <div style="background:var(--white); border:var(--border); padding:24px; border-radius:var(--radius); box-shadow:6px 6px 0 var(--black);">
+            <h3 style="font-weight:900; margin-bottom:16px;">Request</h3>
+            <div style="display:flex; gap:10px; margin-bottom:16px;">
+              <select id="pg-method" style="padding:10px; border:3px solid #151515; border-radius:8px; font-weight:700;">
+                <option>GET</option>
+                <option>POST</option>
+                <option>DELETE</option>
+              </select>
+              <input type="text" id="pg-endpoint" placeholder="/api/am/status?email=test@test.com" style="flex:1; padding:10px; border:3px solid #151515; border-radius:8px;">
+            </div>
+            <div style="margin-bottom:16px;">
+              <label style="font-weight:700; font-size:12px; display:block; margin-bottom:8px;">X-API-Key</label>
+              <input type="password" id="pg-apikey" placeholder="ayaka_live_..." style="width:100%; padding:10px; border:3px solid #151515; border-radius:8px;">
+            </div>
+            <div style="margin-bottom:16px;">
+              <label style="font-weight:700; font-size:12px; display:block; margin-bottom:8px;">JSON Body</label>
+              <textarea id="pg-body" class="code-editor" placeholder='{"email": "user@example.com"}'></textarea>
+            </div>
+            <button id="pg-send-btn" class="btn btn-primary" style="width:100%;">SEND REQUEST</button>
+          </div>
+
+          <!-- Response Side -->
+          <div style="background:var(--white); border:var(--border); padding:24px; border-radius:var(--radius); box-shadow:6px 6px 0 var(--black);">
+            <div style="display:flex; justify-content:space-between; align-items:center; margin-bottom:16px;">
+              <h3 style="font-weight:900;">Response</h3>
+              <div>
+                <span id="pg-status" class="badge" style="display:none;"></span>
+                <span id="pg-time" style="font-size:12px; font-weight:700; margin-left:8px;"></span>
+              </div>
+            </div>
+            <textarea id="pg-response" class="code-editor" readonly style="color:#fff; height:400px;"></textarea>
+          </div>
+        </div>
+      </section>
+    </main>
+
+    <!-- Mobile Bottom Nav -->
+    <nav class="mobile-nav">
+      <a href="#" class="active"><span>🏠</span> Home</a>
+      <a href="#"><span>🔑</span> Keys</a>
+      <a href="/documentation"><span>📚</span> Docs</a>
+      <a href="#"><span>👤</span> Profile</a>
+    </nav>
+  </div>
+
+  <!-- Modal for New Key -->
+  <div id="new-key-modal" style="display:none; position:fixed; top:0; left:0; width:100%; height:100%; background:rgba(0,0,0,0.5); z-index:1000; align-items:center; justify-content:center;">
+    <div style="background:var(--white); border:var(--border); box-shadow:8px 8px 0 var(--black); padding:40px; border-radius:var(--radius); max-width:600px; width:90%;">
+      <h2 style="color:#c62828; font-weight:900; margin-bottom:16px;">⚠️ SIMPAN API KEY INI</h2>
+      <p style="margin-bottom:24px;">Ini adalah satu-satunya kesempatan Anda untuk melihat API Key ini. Simpan di tempat yang aman.</p>
+      <div style="background:var(--black); color:var(--yellow); padding:16px; border-radius:8px; font-family:monospace; font-size:16px; word-break:break-all; margin-bottom:24px;" id="new-key-value"></div>
+      <button id="copy-new-key" class="btn btn-primary" style="width:100%;">COPY TO CLIPBOARD</button>
+    </div>
+  </div>
+
+  <script src="/js/dashboard.js"></script>
+  <script src="/js/api-keys.js"></script>
+  <script src="/js/analytics.js"></script>
+  <script src="/js/playground.js"></script>
+</body>
+</html>

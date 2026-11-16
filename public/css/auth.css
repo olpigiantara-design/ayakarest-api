@@ -1,0 +1,98 @@
+/* Styling untuk halaman Login & Register */
+.auth-container {
+  min-height: 100vh;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  padding: 20px;
+  background: var(--bg);
+}
+
+.auth-card {
+  background: var(--white);
+  border: var(--border);
+  box-shadow: 8px 8px 0 var(--black);
+  border-radius: var(--radius);
+  padding: 40px;
+  width: 100%;
+  max-width: 440px;
+}
+
+.auth-header {
+  text-align: center;
+  margin-bottom: 30px;
+}
+
+.auth-header h1 {
+  font-size: 28px;
+  font-weight: 900;
+  color: var(--black);
+  margin-bottom: 8px;
+}
+
+.auth-header p {
+  color: #555;
+  font-size: 14px;
+}
+
+.auth-form .form-group {
+  margin-bottom: 20px;
+}
+
+.auth-form label {
+  display: block;
+  font-weight: 700;
+  margin-bottom: 8px;
+  font-size: 14px;
+}
+
+.auth-form input[type="text"],
+.auth-form input[type="email"],
+.auth-form input[type="password"] {
+  width: 100%;
+  padding: 14px 16px;
+  border: 3px solid var(--black);
+  border-radius: 8px;
+  font-family: inherit;
+  font-size: 15px;
+  background: var(--bg);
+  outline: none;
+  transition: box-shadow 0.2s;
+}
+
+.auth-form input:focus {
+  box-shadow: 3px 3px 0 var(--yellow);
+}
+
+.auth-actions {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  margin-bottom: 24px;
+  font-size: 14px;
+}
+
+.checkbox-group {
+  display: flex;
+  align-items: center;
+  gap: 8px;
+  cursor: pointer;
+}
+
+.checkbox-group input[type="checkbox"] {
+  accent-color: var(--black);
+  width: 16px;
+  height: 16px;
+}
+
+.auth-footer {
+  text-align: center;
+  margin-top: 24px;
+  font-size: 14px;
+}
+
+.auth-footer a {
+  font-weight: 700;
+  color: var(--black);
+  text-decoration: underline;
+}

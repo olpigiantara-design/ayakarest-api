@@ -1,0 +1,80 @@
+<!DOCTYPE html>
+<html lang="id">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no">
+  <title>Admin Panel — AYAKA Sync</title>
+  <link rel="stylesheet" href="/css/style.css">
+  <link rel="stylesheet" href="/css/dashboard.css">
+</head>
+<body>
+
+  <div class="dashboard-layout">
+    <aside class="sidebar">
+      <div class="sidebar-header">
+        <div class="logo">AYAKA<span>SYNC</span></div>
+        <div style="font-size:10px; font-weight:700; margin-top:4px;">ADMIN PANEL</div>
+      </div>
+      
+      <nav class="sidebar-nav">
+        <a href="#" class="active"><span>📊</span> Overview</a>
+        <a href="#"><span>👥</span> Users</a>
+        <a href="#"><span>⚙️</span> Settings</a>
+        <a href="/dashboard"><span>↩️</span> Exit Admin</a>
+      </nav>
+    </aside>
+
+    <main class="main-content">
+      <div class="topbar">
+        <div class="page-title">Admin Overview</div>
+        <div class="user-info">
+          <span class="badge badge-admin">ADMIN</span>
+        </div>
+      </div>
+
+      <div class="stats-grid">
+        <div class="stat-card">
+          <h3>Total Users</h3>
+          <div class="value" id="adm-total-users">0</div>
+        </div>
+        <div class="stat-card">
+          <h3>Total API Keys</h3>
+          <div class="value" id="adm-total-keys">0</div>
+        </div>
+        <div class="stat-card">
+          <h3>Total Requests</h3>
+          <div class="value" id="adm-total-requests">0</div>
+        </div>
+      </div>
+
+      <div style="background:var(--white); border:var(--border); padding:24px; border-radius:var(--radius); box-shadow:6px 6px 0 var(--black); margin-bottom:24px;">
+        <h3 style="font-weight:900; margin-bottom:16px;">System Settings</h3>
+        <div style="display:flex; align-items:center; gap:12px; margin-bottom:16px;">
+          <label style="font-weight:700;">Maintenance Mode:</label>
+          <button id="maintenance-toggle" class="btn btn-outline" style="padding:8px 16px;">DISABLED</button>
+        </div>
+        <p style="font-size:12px; color:#555;">Mengaktifkan mode ini akan memblokir akses pengguna biasa ke API.</p>
+      </div>
+
+      <div class="table-wrapper">
+        <table>
+          <thead>
+            <tr>
+              <th>User</th>
+              <th>Email</th>
+              <th>Role</th>
+              <th>Status</th>
+              <th>Action</th>
+            </tr>
+          </thead>
+          <tbody id="admin-users-table">
+            <!-- Data diisi oleh JS -->
+          </tbody>
+        </table>
+      </div>
+    </main>
+  </div>
+
+  <script src="/js/admin.js"></script>
+</body>
+</html>

@@ -1,0 +1,281 @@
+<!DOCTYPE html>
+<html lang="id">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no">
+  <title>Documentation — AYAKA API</title>
+  <link rel="stylesheet" href="/css/style.css">
+  <style>
+    /* Styling khusus halaman dokumentasi */
+    .docs-container {
+      max-width: 1000px;
+      margin: 0 auto;
+      padding: 40px 20px;
+    }
+    
+    .docs-container h1, 
+    .docs-container h2 {
+      font-weight: 900;
+      margin-top: 40px;
+      margin-bottom: 16px;
+      color: var(--black);
+      font-family: var(--font-heading);
+    }
+
+    .docs-container h1 { margin-top: 0; }
+    
+    .docs-container p {
+      font-size: 15px;
+      margin-bottom: 16px;
+      line-height: 1.6;
+    }
+
+    /* KOTAK NEO BRUTALISM UNTUK BASE URL & AUTH HEADER */
+    .neo-info-box {
+      background: var(--white);
+      border: var(--border);
+      box-shadow: var(--shadow-sm);
+      border-radius: var(--radius);
+      padding: 24px;
+      margin-bottom: 32px;
+      display: flex;
+      flex-direction: column;
+      gap: 12px;
+    }
+
+    .neo-info-box p {
+      margin-bottom: 0;
+      font-size: 16px;
+      word-break: break-all; /* Agar URL panjang turun ke bawah di HP */
+    }
+
+    .neo-info-box code {
+      background: var(--bg);
+      padding: 4px 8px;
+      border-radius: 4px;
+      border: 2px solid var(--black);
+      font-weight: 700;
+      font-family: monospace;
+    }
+
+    /* Container untuk membuat tabel bisa di-scroll di HP */
+    .table-responsive {
+      width: 100%;
+      overflow-x: auto;
+      -webkit-overflow-scrolling: touch;
+      margin-bottom: 32px;
+      border: var(--border);
+      box-shadow: var(--shadow-sm);
+      border-radius: var(--radius);
+      background: var(--white);
+    }
+
+    .endpoint-table {
+      width: 100%;
+      min-width: 700px;
+      border-collapse: collapse;
+    }
+
+    .endpoint-table th, 
+    .endpoint-table td {
+      padding: 16px;
+      border-bottom: 2px solid var(--black);
+      text-align: left;
+      font-size: 14px;
+      vertical-align: top;
+    }
+
+    .endpoint-table th {
+      background: var(--yellow-2);
+      font-weight: 900;
+    }
+
+    .endpoint-table tr:last-child td { border-bottom: none; }
+
+    .code-block {
+      font-size: 13px;
+      margin-bottom: 32px;
+    }
+  </style>
+</head>
+<body>
+  <header class="navbar">
+    <a href="/" class="logo">AYAKA<span>API</span></a>
+    <nav>
+      <a href="/dashboard" class="btn btn-primary">Dashboard</a>
+    </nav>
+  </header>
+
+  <main class="docs-container">
+    <h1>AYAKA API Documentation</h1>
+    
+    <!-- KOTAK NEO BRUTALISM BARU -->
+    <div class="neo-info-box">
+      <p><strong>Base URL:</strong> <br> <code id="base-url"></code></p>
+      <p><strong>Auth header:</strong> <br> <code>X-API-Key: ayaka_live_YOUR_SECRET_KEY</code></p>
+    </div>
+
+    <h2>Endpoints</h2>
+    <p>Semua endpoint (kecuali yang ditandai Public) memerlukan otentikasi. Endpoint dengan label <strong>Session</strong> memerlukan login cookie, sedangkan label <strong>Permission</strong> memerlukan API Key yang sesuai.</p>
+    
+    <div class="table-responsive">
+      <table class="endpoint-table">
+        <thead>
+          <tr>
+            <th>Method</th>
+            <th>Endpoint</th>
+            <th>Fungsi</th>
+            <th>Auth / Permission</th>
+          </tr>
+        </thead>
+        <tbody>
+          <tr><td><strong>GET</strong></td><td><code>/api/health</code></td><td>Status server</td><td>Public</td></tr>
+          <tr><td><strong>GET</strong></td><td><code>/api</code></td><td>Informasi API</td><td>Public</td></tr>
+          <tr><td><strong>GET</strong></td><td><code>/api/user/profile</code></td><td>Profil pengguna</td><td><code>profile:read</code></td></tr>
+          <tr><td><strong>GET</strong></td><td><code>/api/keys</code></td><td>Daftar API Key</td><td>Session</td></tr>
+          <tr><td><strong>POST</strong></td><td><code>/api/keys/generate</code></td><td>Generate API Key</td><td>Session</td></tr>
+          <tr><td><strong>DELETE</strong></td><td><code>/api/keys/{id}</code></td><td>Revoke API Key</td><td>Session</td></tr>
+          <tr><td><strong>POST</strong></td><td><code>/api/am/send</code></td><td>Kirim Magic Link</td><td><code>premium:send</code></td></tr>
+          <tr><td><strong>GET</strong></td><td><code>/api/am/verif?token=</code></td><td>Verifikasi Magic Link</td><td>Token (Public)</td></tr>
+          <tr><td><strong>GET</strong></td><td><code>/api/am/status?email=</code></td><td>Status Premium</td><td><code>premium:status</code></td></tr>
+          <tr><td><strong>POST</strong></td><td><code>/api/am/renew</code></td><td>Perpanjang Premium</td><td><code>premium:renew</code></td></tr>
+          <tr><td><strong>POST</strong></td><td><code>/api/am/revoke</code></td><td>Cabut Premium</td><td><code>premium:revoke</code></td></tr>
+        </tbody>
+      </table>
+    </div>
+
+    <h2>Contoh Respons</h2>
+    <p><strong>Sukses (HTTP 200):</strong></p>
+    <pre class="code-block"><code>{
+  "success": true,
+  "message": "Magic Link sent successfully",
+  "data": {
+    "email": "user@example.com",
+    "expires_in": 900
+  },
+  "timestamp": "2026-11-16T10:00:00+00:00"
+}</code></pre>
+
+    <p><strong>Gagal (HTTP 401):</strong></p>
+    <pre class="code-block"><code>{
+  "success": false,
+  "message": "Invalid API Key",
+  "error": {
+    "code": "INVALID_API_KEY"
+  },
+  "timestamp": "2026-11-16T10:00:00+00:00"
+}</code></pre>
+
+    <h2>JavaScript (Fetch)</h2>
+    <pre class="code-block"><code>const BASE_URL = "https://YOUR-AYAKA-DOMAIN.vercel.app";
+const API_KEY = "ayaka_live_YOUR_SECRET_KEY";
+
+async function sendMagicLink(email) {
+  const res = await fetch(`${BASE_URL}/api/am/send`, {
+    method: "POST",
+    headers: { 
+      "Content-Type": "application/json", 
+      "X-API-Key": API_KEY 
+    },
+    body: JSON.stringify({ email, plan: "premium" }),
+  });
+  
+  const result = await res.json();
+  if (!res.ok) throw new Error(result.message || "Request failed");
+  return result;
+}
+
+async function checkPremium(email) {
+  const res = await fetch(
+    `${BASE_URL}/api/am/status?email=${encodeURIComponent(email)}`,
+    { headers: { "X-API-Key": API_KEY } }
+  );
+  return res.json();
+}</code></pre>
+
+    <h2>PHP (cURL)</h2>
+    <pre class="code-block"><code>&lt;?php
+$baseUrl = "https://YOUR-AYAKA-DOMAIN.vercel.app";
+$apiKey  = "ayaka_live_YOUR_SECRET_KEY";
+
+function ayakaPost($path, $payload, $apiKey, $baseUrl) {
+    $ch = curl_init($baseUrl . $path);
+    curl_setopt_array($ch, [
+        CURLOPT_RETURNTRANSFER => true,
+        CURLOPT_POST           => true,
+        CURLOPT_HTTPHEADER     => [
+            "Content-Type: application/json",
+            "X-API-Key: " . $apiKey,
+        ],
+        CURLOPT_POSTFIELDS => json_encode($payload),
+        CURLOPT_TIMEOUT    => 20,
+    ]);
+    $response = curl_exec($ch);
+    $status   = curl_getinfo($ch, CURLINFO_HTTP_CODE);
+    if ($response === false) {
+        throw new RuntimeException(curl_error($ch));
+    }
+    curl_close($ch);
+    return ["status" => $status, "body" => json_decode($response, true)];
+}
+
+$result = ayakaPost("/api/am/send",
+    ["email" => "user@example.com", "plan" => "premium"],
+    $apiKey, $baseUrl);
+
+echo "HTTP Status: " . $result["status"] . PHP_EOL;
+echo json_encode($result["body"], JSON_PRETTY_PRINT);</code></pre>
+
+    <h2>Python (requests)</h2>
+    <pre class="code-block"><code>import requests
+
+BASE_URL = "https://YOUR-AYAKA-DOMAIN.vercel.app"
+API_KEY  = "ayaka_live_YOUR_SECRET_KEY"
+HEADERS  = {"Content-Type": "application/json", "X-API-Key": API_KEY}
+
+# Kirim Magic Link
+r = requests.post(
+    f"{BASE_URL}/api/am/send",
+    headers=HEADERS,
+    json={"email": "user@example.com", "plan": "premium"},
+    timeout=20,
+)
+print(r.status_code, r.json())
+
+# Cek status Premium
+r = requests.get(
+    f"{BASE_URL}/api/am/status",
+    headers={"X-API-Key": API_KEY},
+    params={"email": "user@example.com"},
+    timeout=20,
+)
+print(r.status_code, r.json())
+
+# Perpanjang Premium
+r = requests.post(
+    f"{BASE_URL}/api/am/renew",
+    headers=HEADERS,
+    json={"email": "user@example.com", "duration_days": 30},
+    timeout=20,
+)
+print(r.status_code, r.json())</code></pre>
+  </main>
+
+  <footer class="footer">
+    <div class="footer-inner">
+      <div>
+        <div class="logo">AYAKA<span>API</span></div>
+        <p>Powered by AYAKA Sync</p>
+      </div>
+      <div class="footer-links">
+        <a href="https://github.com/olpigiantara-design" target="_blank" rel="noopener">GitHub</a>
+        <a href="https://whatsapp.com/channel/0029VbEbK4dHgZWWJmXFP52o" target="_blank" rel="noopener">WhatsApp Channel</a>
+      </div>
+    </div>
+  </footer>
+
+  <script>
+    document.getElementById("base-url").textContent = location.origin + "/api";
+  </script>
+</body>
+</html>

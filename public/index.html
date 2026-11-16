@@ -1,0 +1,442 @@
+<!DOCTYPE html>
+<html lang="id">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no">
+  <title>AYAKA API — Your API. Your Control. Your Ecosystem.</title>
+  
+  <!-- IMPORT FONT -->
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=Archivo+Black&family=Montserrat:wght@400;500;700;900&display=swap" rel="stylesheet">
+  
+  <!-- PANGGIL FILE CSS UTAMA -->
+  <link rel="stylesheet" href="/css/style.css">
+
+  <!-- CUSTOM CSS -->
+  <style>
+    :root {
+      --font-heading: 'Archivo Black', sans-serif;
+      --font-body: 'Montserrat', sans-serif;
+    }
+
+    /* --- HEADER BARU (AYAKA SYNC WIDGET) --- */
+    .ayaka-header-wrap {
+      background-color: var(--yellow);
+      padding: 16px 4vw;
+      border-bottom: var(--border);
+      position: sticky;
+      top: 0;
+      z-index: 100;
+    }
+
+    .header-card {
+      background-color: #f7f7f2;
+      background-image: repeating-linear-gradient(45deg, transparent, transparent 10px, rgba(0,0,0,0.03) 10px, rgba(0,0,0,0.03) 20px);
+      border: var(--border-sm);
+      border-radius: 16px;
+      box-shadow: var(--shadow-sm);
+      padding: 16px;
+      max-width: 800px;
+      margin: 0 auto;
+      display: flex;
+      flex-direction: column;
+      gap: 12px;
+    }
+
+    .header-top {
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+      gap: 12px;
+    }
+
+    .header-brand {
+      display: flex;
+      align-items: center;
+      gap: 10px;
+    }
+
+    .brand-logo {
+      width: 44px;
+      height: 44px;
+      background: var(--yellow);
+      border: 3px solid var(--black);
+      border-radius: 10px;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      font-family: var(--font-heading);
+      font-weight: 900;
+      font-size: 18px;
+      box-shadow: 2px 2px 0 var(--black);
+      flex-shrink: 0;
+    }
+
+    .brand-text h1 {
+      font-family: var(--font-heading);
+      font-size: 18px;
+      font-weight: 900;
+      margin: 0;
+      line-height: 1.1;
+      letter-spacing: -0.5px;
+    }
+
+    .brand-text p {
+      font-size: 10px;
+      font-weight: 700;
+      color: #666;
+      margin: 2px 0 0 0;
+      letter-spacing: 0.5px;
+      text-transform: uppercase;
+    }
+
+    .header-actions {
+      display: flex;
+      align-items: center;
+      gap: 8px;
+    }
+
+    .online-badge {
+      background: #00d26a;
+      color: var(--white);
+      border: 3px solid var(--black);
+      border-radius: 50px;
+      padding: 6px 12px;
+      font-weight: 900;
+      font-size: 12px;
+      display: flex;
+      align-items: center;
+      gap: 6px;
+      box-shadow: 2px 2px 0 var(--black);
+      white-space: nowrap;
+    }
+
+    .online-dot {
+      width: 8px;
+      height: 8px;
+      background: var(--white);
+      border-radius: 50%;
+      border: 1.5px solid var(--black);
+    }
+
+    .menu-btn {
+      width: 36px;
+      height: 36px;
+      background: var(--white);
+      border: 3px solid var(--black);
+      border-radius: 10px;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      cursor: pointer;
+      box-shadow: 2px 2px 0 var(--black);
+      transition: transform 0.1s;
+      flex-shrink: 0;
+    }
+    .menu-btn:active { transform: translate(2px, 2px); box-shadow: none; }
+    .menu-btn svg { width: 20px; height: 20px; stroke: var(--black); stroke-width: 3; }
+
+    .header-widgets {
+      display: grid;
+      grid-template-columns: repeat(4, 1fr);
+      gap: 8px;
+    }
+
+    .widget-box {
+      background: var(--white);
+      border: 3px solid var(--black);
+      border-radius: 10px;
+      padding: 8px 4px;
+      font-family: var(--font-body);
+      font-weight: 700;
+      font-size: 13px;
+      white-space: nowrap;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      box-shadow: 2px 2px 0 var(--black);
+    }
+
+    @media (max-width: 600px) {
+      .header-card { padding: 12px; gap: 10px; }
+      .header-widgets { grid-template-columns: 1fr 1fr; gap: 8px; }
+      .widget-box { font-size: 12px; padding: 6px 4px; }
+      .brand-text h1 { font-size: 16px; }
+      .brand-text p { font-size: 9px; }
+      .brand-logo { width: 40px; height: 40px; font-size: 16px; }
+      .online-badge { padding: 4px 10px; font-size: 11px; }
+      .menu-btn { width: 32px; height: 32px; }
+    }
+
+    /* --- CUSTOM HERO STYLING --- */
+    .hero-text-box {
+      position: relative;
+      overflow: hidden;
+      text-align: left !important;
+      padding: 48px 40px !important;
+      display: block !important;
+    }
+
+    .deco-circle {
+      position: absolute;
+      top: -40px;
+      right: -40px;
+      width: 180px;
+      height: 180px;
+      background: var(--yellow);
+      border: 4px solid var(--black);
+      border-radius: 50%;
+      z-index: 0;
+    }
+
+    .deco-polygon {
+      position: absolute;
+      bottom: -30px;
+      right: 40px;
+      width: 100px;
+      height: 120px;
+      background: var(--yellow-2);
+      border: 4px solid var(--black);
+      transform: skewX(-20deg);
+      z-index: 0;
+    }
+
+    .hero-content { position: relative; z-index: 1; }
+
+    .hero-badge {
+      font-family: var(--font-body) !important;
+      font-weight: 800 !important;
+      letter-spacing: 1.5px !important;
+      display: inline-flex !important;
+      align-items: center;
+      gap: 8px;
+      margin-bottom: 24px !important;
+    }
+
+    .hero-title {
+      font-family: var(--font-heading) !important;
+      font-size: clamp(36px, 6vw, 56px) !important;
+      line-height: 1.15 !important;
+      letter-spacing: -1px !important;
+      margin-bottom: 20px !important;
+      color: var(--black) !important;
+    }
+
+    .highlight-box {
+      display: inline-block;
+      background: var(--yellow);
+      border: 4px solid var(--black);
+      padding: 0 12px;
+      box-shadow: 4px 4px 0 var(--black);
+      margin: 8px 0;
+    }
+
+    .hero-desc {
+      font-family: var(--font-body) !important;
+      font-weight: 500 !important;
+      font-size: 16px !important;
+      color: #333 !important;
+      line-height: 1.7 !important;
+      margin-bottom: 32px !important;
+      text-align: left !important;
+    }
+
+    .hero-actions { justify-content: flex-start !important; }
+
+    @media (max-width: 600px) {
+      .hero-text-box { padding: 32px 24px !important; }
+      .deco-circle { width: 120px; height: 120px; top: -20px; right: -20px; }
+      .deco-polygon { width: 80px; height: 90px; bottom: -20px; right: 20px; }
+      .hero-title { font-size: 32px !important; }
+      .hero-actions { flex-direction: column; }
+      .hero-actions .btn { width: 100%; }
+    }
+  </style>
+</head>
+<body>
+
+  <!-- HEADER (AYAKA SYNC WIDGET) -->
+  <header class="ayaka-header-wrap">
+    <div class="header-card">
+      <div class="header-top">
+        <div class="header-brand">
+          <div class="brand-logo">AS</div>
+          <div class="brand-text">
+            <h1>AYAKA SYNC</h1>
+            <p>Generator Alight Motion</p>
+          </div>
+        </div>
+        <div class="header-actions">
+          <div class="online-badge">
+            <span class="online-dot"></span> ONLINE
+          </div>
+          <a href="/login" class="menu-btn" title="Login">
+            <svg viewBox="0 0 24 24" fill="none" stroke-linecap="round" stroke-linejoin="round">
+              <line x1="3" y1="12" x2="21" y2="12"></line>
+              <line x1="3" y1="6" x2="21" y2="6"></line>
+              <line x1="3" y1="18" x2="21" y2="18"></line>
+            </svg>
+          </a>
+        </div>
+      </div>
+
+      <div class="header-widgets">
+        <div class="widget-box" id="widget-clock">00.00.00</div>
+        <div class="widget-box" id="widget-date">1 JAN 2026</div>
+        <div class="widget-box" id="widget-battery">⚡ 100%</div>
+        <div class="widget-box" id="widget-uptime">00:00:00</div>
+      </div>
+    </div>
+  </header>
+
+  <!-- KONTEN UTAMA (LANDING PAGE) -->
+  <section class="hero">
+    <div class="hero-inner">
+      
+      <!-- KOTAK NEO BRUTALISM (RATA KIRI) -->
+      <div class="hero-text-box reveal">
+        <div class="deco-circle"></div>
+        <div class="deco-polygon"></div>
+
+        <div class="hero-content">
+          <div class="hero-badge">⚡ POWERED BY AYAKA SYNC</div>
+          
+          <h1 class="hero-title">
+            YOUR API.<br>
+            <span class="highlight-box">YOUR CONTROL.</span><br>
+            YOUR ECOSYSTEM.
+          </h1>
+          
+          <p class="hero-desc">
+            Platform manajemen REST API profesional dengan API Key sungguhan, 
+            Magic Link Premium, dan analytics real-time. Dibangun untuk developer 
+            yang serius dengan keamanan.
+          </p>
+
+          <div class="hero-actions">
+            <a href="/register" class="btn btn-primary btn-lg">GET STARTED</a>
+            <a href="/documentation" class="btn btn-outline btn-lg">EXPLORE DOCS</a>
+          </div>
+        </div>
+      </div>
+      
+      <div class="hero-stats reveal" id="hero-stats">
+        <div class="stat"><span class="num" data-counter="0">0</span><span>API Requests</span></div>
+        <div class="stat"><span class="num" data-counter="0">0</span><span>Active Keys</span></div>
+        <div class="stat"><span class="num" data-counter="0">0</span><span>Premium Users</span></div>
+      </div>
+    </div>
+  </section>
+
+  <!-- FITUR LENGKAP (6 KARTU) -->
+  <section id="features" class="section">
+    <h2 class="section-title">BUILT FOR CONTROL</h2>
+    <div class="grid-3">
+      <div class="card reveal">
+        <div class="card-icon">🔑</div>
+        <h3>API Key Management</h3>
+        <p>Generate, revoke, dan atur permission API Key dengan hash SHA-256 dan secret yang tidak pernah disimpan dalam bentuk mentah.</p>
+      </div>
+      <div class="card reveal">
+        <div class="card-icon">✨</div>
+        <h3>Magic Link Premium</h3>
+        <p>Aktifkan status Premium melalui email terverifikasi dengan token one-time yang kedaluwarsa dalam 15 menit.</p>
+      </div>
+      <div class="card reveal">
+        <div class="card-icon">🛡️</div>
+        <h3>Security First</h3>
+        <p>Argon2id, session HttpOnly, CSRF protection, rate limiting, dan audit log untuk setiap tindakan sensitif.</p>
+      </div>
+      <div class="card reveal">
+        <div class="card-icon">📊</div>
+        <h3>Real-Time Analytics</h3>
+        <p>Pantau request, success rate, dan aktivasi Premium langsung dari database — tanpa angka palsu.</p>
+      </div>
+      <div class="card reveal">
+        <div class="card-icon">⚡</div>
+        <h3>REST API</h3>
+        <p>Endpoint JSON yang konsisten dengan autentikasi X-API-Key, siap digunakan aplikasi PHP, Python, dan JavaScript.</p>
+      </div>
+      <div class="card reveal">
+        <div class="card-icon">🔒</div>
+        <h3>Owner Isolation</h3>
+        <p>Setiap API Key terikat pada owner_id. Pengguna tidak dapat mengakses data atau key milik pengguna lain.</p>
+      </div>
+    </div>
+  </section>
+
+  <!-- QUICK START -->
+  <section class="section section-yellow">
+    <h2 class="section-title">QUICK START</h2>
+    <pre class="code-block"><code>curl -X POST https://YOUR-DOMAIN.vercel.app/api/am/send \
+  -H "Content-Type: application/json" \
+  -H "X-API-Key: ayaka_live_YOUR_SECRET_KEY" \
+  -d '{"email":"user@example.com","plan":"premium"}'</code></pre>
+  </section>
+
+  <!-- FAQ -->
+  <section id="faq" class="section">
+    <h2 class="section-title">FAQ</h2>
+    <details class="faq-item reveal"><summary>Apa itu AYAKA API?</summary>
+      <p>Platform manajemen REST API dengan API Key sungguhan dan Magic Link Premium yang dapat diintegrasikan ke aplikasi pihak ketiga melalui header X-API-Key.</p>
+    </details>
+    <details class="faq-item reveal"><summary>Apakah API Key aman?</summary>
+      <p>Ya. Secret hanya ditampilkan sekali saat pembuatan. Database hanya menyimpan hash SHA-256 dengan pepper server-side.</p>
+    </details>
+    <details class="faq-item reveal"><summary>Siapa pemilik platform ini?</summary>
+      <p>AYAKA API dimiliki oleh OLPI STORE dan dikembangkan oleh AYAKA Sync.</p>
+    </details>
+  </section>
+
+  <!-- FOOTER (DENGAN EMAIL LENGKAP) -->
+  <footer class="footer">
+    <div class="footer-inner">
+      <div>
+        <div class="logo">AYAKA<span>API</span></div>
+        <p>Powered by AYAKA Sync</p>
+        <p>Owner: OLPI STORE</p>
+      </div>
+      <div class="footer-links">
+        <a href="https://github.com/olpigiantara-design" target="_blank" rel="noopener">GitHub</a>
+        <a href="https://whatsapp.com/channel/0029VbEbK4dHgZWWJmXFP52o" target="_blank" rel="noopener">WhatsApp Channel</a>
+        <a href="mailto:olpieditz336@gmail.com">Email Admin</a>
+      </div>
+    </div>
+  </footer>
+
+  <script src="/js/app.js"></script>
+
+  <!-- SCRIPT WIDGET HEADER -->
+  <script>
+    document.addEventListener("DOMContentLoaded", () => {
+      const clockEl = document.getElementById("widget-clock");
+      const dateEl = document.getElementById("widget-date");
+      const batteryEl = document.getElementById("widget-battery");
+      const uptimeEl = document.getElementById("widget-uptime");
+
+      const startTime = Date.now();
+      const months = ["JAN", "FEB", "MAR", "APR", "MAY", "JUN", "JUL", "AUG", "SEP", "OCT", "NOV", "DEC"];
+
+      setInterval(() => {
+        const now = new Date();
+        if(clockEl) clockEl.textContent = `${String(now.getHours()).padStart(2, '0')}.${String(now.getMinutes()).padStart(2, '0')}.${String(now.getSeconds()).padStart(2, '0')}`;
+        if(dateEl) dateEl.textContent = `${now.getDate()} ${months[now.getMonth()]} ${now.getFullYear()}`;
+        
+        const diff = Math.floor((Date.now() - startTime) / 1000);
+        if(uptimeEl) uptimeEl.textContent = `${String(Math.floor(diff / 3600)).padStart(2, '0')}:${String(Math.floor((diff % 3600) / 60)).padStart(2, '0')}:${String(diff % 60).padStart(2, '0')}`;
+      }, 1000);
+
+      if (navigator.getBattery) {
+        navigator.getBattery().then(battery => {
+          const updateBattery = () => { if(batteryEl) batteryEl.textContent = `⚡ ${Math.round(battery.level * 100)}%`; };
+          updateBattery();
+          battery.addEventListener('levelchange', updateBattery);
+        });
+      } else {
+        if(batteryEl) batteryEl.textContent = `⚡ 100%`;
+      }
+    });
+  </script>
+</body>
+</html>
